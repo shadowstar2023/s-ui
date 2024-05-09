@@ -73,7 +73,7 @@ jobs:
           cd sing-box
           go build -v -gcflags=all="-l -B -C" -mod=mod -trimpath \
           -ldflags "-s -w -buildid= -extldflags '-static'" -a \
-          -tags='netgo osusergo static_build with_quic with_grpc with_wireguard with_ech with_utls with_reality_server with_acme with_v2ray_api with_clash_api with_gvisor' \
+          -tags='netgo osusergo static_build with_quic with_grpc with_wireguard with_ech with_utls with_reality_server with_acme with_v2ray_api with_clash_api with_gvisor with_embedded_tor' \
           -o sing-box ./cmd/sing-box
           upx --ultra-brute -9 -v --lzma --best --force sing-box
           cd ..
