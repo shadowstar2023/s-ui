@@ -5,29 +5,29 @@
         <v-select
           hide-details
           :items="[1,2,3]"
-          label="Version"
+          :label="$t('version')"
           v-model="version">
         </v-select>
       </v-col>
-      <v-col cols="12" sm="6" md="4" v-if="inbound.password != undefined">
+      <v-col cols="12" sm="6" md="4" v-if="data.password != undefined">
         <v-text-field
-        label="Password"
+        :label="$t('types.pw')"
         hide-details
-        v-model="inbound.password">
+        v-model="data.password">
         </v-text-field>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" sm="6" md="4">
         <v-text-field
-        label="Handshake Server"
+        :label="$t('types.shdwTls.hs')"
         hide-details
         v-model="Inbound.handshake.server">
         </v-text-field>
       </v-col>
       <v-col cols="12" sm="6" md="4">
         <v-text-field
-        label="Server Port"
+        :label="$t('out.port')"
         type="number"
         min="0"
         hide-details
@@ -35,11 +35,11 @@
         </v-text-field>
       </v-col>
     </v-row>
-    <Dial :dial="Inbound.handshake" />
+    <Dial :dial="Inbound.handshake" :outTags="outTags" />
     <v-row v-if="Inbound.handshake_for_server_name != undefined">
       <v-col cols="12" sm="6" md="4">
         <v-text-field
-        label="Add Hanshake Server"
+        :label="$t('types.shdwTls.adHS')"
         hide-details
         append-icon="mdi-plus"
         @click:append="addHandshakeServer()"
@@ -67,14 +67,14 @@
       <v-row>
         <v-col cols="12" sm="6" md="4">
           <v-text-field
-          label="Handshake Server"
+          :label="$t('types.shdwTls.hs')"
           hide-details
           v-model="value.server">
           </v-text-field>
         </v-col>
         <v-col cols="12" sm="6" md="4">
           <v-text-field
-          label="Server Port"
+          :label="$t('out.port')"
           type="number"
           min="0"
           hide-details
@@ -82,7 +82,7 @@
           </v-text-field>
         </v-col>
       </v-row>
-      <Dial :dial="value" />
+      <Dial :dial="value" :outTags="outTags" />
     </v-card>
   </v-card>
 </template>
@@ -92,7 +92,7 @@ import { ShadowTLS } from '@/types/inbounds'
 import Dial from '../Dial.vue'
 
 export default {
-  props: ['inbound'],
+  props: ['data', 'outTags'],
   data() {
     return {
       handshake_server: ''
@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     addHandshakeServer() {
-      this.inbound.handshake_for_server_name[this.handshake_server] = {}
+      this.data.handshake_for_server_name[this.handshake_server] = {}
       // Clear the input field after adding the server
       this.handshake_server = ''
     }
@@ -141,7 +141,7 @@ export default {
       }
     },
     Inbound(): ShadowTLS {
-      return <ShadowTLS>this.$props.inbound;
+      return <ShadowTLS>this.$props.data;
     },
     server_port: {
       get() { return this.Inbound.handshake.server_port ? this.Inbound.handshake.server_port : 443; },

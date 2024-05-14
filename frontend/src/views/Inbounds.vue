@@ -5,6 +5,8 @@
     :id="modal.id"
     :stats="modal.stats"
     :data="modal.data"
+    :inTags="inTags"
+    :outTags="outTags"
     @close="closeModal"
     @save="saveModal"
   />
@@ -42,7 +44,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col>{{ $t('in.tls') }}</v-col>
+            <v-col>{{ $t('objects.tls') }}</v-col>
             <v-col dir="ltr">
               {{ Object.hasOwn(item,'tls') ? $t(item.tls?.enabled ? 'enable' : 'disable') : '-'  }}
             </v-col>
@@ -113,6 +115,14 @@ const appConfig = computed((): Config => {
 
 const inbounds = computed((): Inbound[] => {
   return <Inbound[]> appConfig.value.inbounds
+})
+
+const inTags = computed((): string[] => {
+  return inbounds.value.map(i => i.tag)
+})
+
+const outTags = computed((): string[] => {
+  return appConfig.value.outbounds?.map(i => i.tag)
 })
 
 const clients = computed((): Client[] => {

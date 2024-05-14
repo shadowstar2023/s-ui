@@ -18,20 +18,20 @@
             </v-select>
           </v-col>
           <v-col cols="12" sm="6" md="4">
-            <v-text-field v-model="outbound.tag" :label="$t('in.tag')" hide-details></v-text-field>
+            <v-text-field v-model="outbound.tag" :label="$t('objects.tag')" hide-details></v-text-field>
           </v-col>
         </v-row>
         <v-row v-if="!NoServer.includes(outbound.type)">
           <v-col cols="12" sm="6" md="4">
             <v-text-field
-            label="Server Address"
+            :label="$t('out.addr')"
             hide-details
             v-model="outbound.server">
             </v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="4">
             <v-text-field
-            label="Server Port"
+            :label="$t('out.addr')"
             type="number"
             min="0"
             hide-details
@@ -53,13 +53,13 @@
         <Hysteria2 v-if="outbound.type == outTypes.Hysteria2" direction="out" :data="outbound" />
         <Tor v-if="outbound.type == outTypes.Tor" :data="outbound" />
         <Ssh v-if="outbound.type == outTypes.SSH" :data="outbound" />
-        <Selector v-if="outbound.type == outTypes.Selector" :data="outbound" />
-        <UrlTest v-if="outbound.type == outTypes.URLTest" :data="outbound" />
+        <Selector v-if="outbound.type == outTypes.Selector" :data="outbound" :tags="tags" />
+        <UrlTest v-if="outbound.type == outTypes.URLTest" :data="outbound" :tags="tags" />
 
         <Transport v-if="Object.hasOwn(outbound,'transport')" :data="outbound" />
         <OutTLS v-if="Object.hasOwn(outbound,'tls')" :outbound="outbound" />
         <Multiplex v-if="Object.hasOwn(outbound,'multiplex')" direction="out" :data="outbound" />
-        <Dial v-if="!NoDial.includes(outbound.type)" :dial="outbound" />
+        <Dial v-if="!NoDial.includes(outbound.type)" :dial="outbound" :outTags="tags" />
         <v-switch v-model="outboundStats" color="primary" :label="$t('stats.enable')" hide-details></v-switch>
         <pre>{{ outbound }}</pre>
       </v-card-text>
@@ -109,7 +109,7 @@ import Ssh from '@/components/protocols/Ssh.vue'
 import Selector from '@/components/protocols/Selector.vue'
 import UrlTest from '@/components/protocols/UrlTest.vue'
 export default {
-  props: ['visible', 'data', 'id', 'stats'],
+  props: ['visible', 'data', 'id', 'stats', 'tags'],
   emits: ['close', 'save'],
   data() {
     return {
